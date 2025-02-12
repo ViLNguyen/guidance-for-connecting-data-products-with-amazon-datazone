@@ -1,0 +1,23 @@
+options:
+  - key: region
+    value: us-west-2
+    displayName: AWS Region
+    description: The AWS Region to deploy the guidance to.
+    displayType: region
+    possibleValues:
+      - eu-west-1
+      - us-west-2
+  - key: Deployment
+    value:
+      name: prod_environment
+      environmentType: PRODUCTION
+    displayType: environment
+    displayName: Deployment Details
+    description: Select an AWS Account Connection to deploy this solution to.
+    environmentOptions:
+      accountConnections:
+        - name: awsAccountConnection
+          roles:
+            - name: launchRole
+              capabilities:
+                - '*'
