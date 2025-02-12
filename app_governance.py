@@ -18,7 +18,7 @@ env = cdk.Environment(
 
 #copy and modify content from  config.governance.g_config to replace manual steps
 
-governed_id = stack.try_get_context("GOVERNED_ID")
+governed_id = stack.node.try_get_context("GOVERNED_ID")
 GOVERNANCE_PROPS = {
     'account_id': account,
     'region': region,
