@@ -1,0 +1,60 @@
+Name: deployment
+SchemaVersion: '1.0'
+Triggers:
+  - Type: PUSH
+    Branches:
+      - main
+  - Type: SCHEDULE
+    Expression: "0 2 * * ? *"
+    Branches:
+      - main
+Compute:
+  Type: EC2
+  Fleet: Linux.x86-64.Large
+Actions:
+  init:
+    Identifier: aws/build@v1
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Configuration:
+      Steps:
+        - Run: chmod u+x ./.codecatalyst/*.sh
+        - Run: ./.codecatalyst/init-runner.sh "${Secrets.USER_NAME}" "${Secrets.USER_EMAIL}" "${Secrets.USER_ID}" "${Secrets.PAT}" "${Secrets.SKIP_FOR_CUSTOMER}"
+        #- Run: command -v cdk &> /dev/null && npm update -g aws-cdk || npm install -g aws-cdk; cdk --version
+        - Run: cd deployment/
+        - Run: yum update -y
+        - Run: yum install -y pip npm
+        - Run: npm install -g aws-cdk@latest
+        - Run: cdk --version
+        - Run: pip install -r requirements.txt
+      Container:
+        Registry: CODECATALYST
+        Image: CodeCatalystLinux_x86_64:2024_03
+    Environment:
+      Name: prod_environment
+  CDKBootstrap:
+    Identifier: aws/cdk-bootstrap@v2
+    DependsOn: 
+      - init
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Environment:
+      Name: prod_environment
+    Configuration:
+      Region: us-west-2
+  CDKDeploy:
+    Identifier: aws/cdk-deploy@v2
+    DependsOn: 
+      - CDKBootstrap
+    Environment:
+      Name: prod_environment
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Configuration:
+      StackName: OpenSearchStack
+      Region: us-west-2
+      CdkRootPath: deployment
+      CdkCliVersion: latest
