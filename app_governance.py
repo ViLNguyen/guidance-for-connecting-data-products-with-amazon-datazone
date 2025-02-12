@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import aws_cdk as cdk
 
-from config.governance.g_config import GOVERNANCE_PROPS, GOVERNANCE_WORKFLOW_PROPS
+# from config.governance.g_config import GOVERNANCE_PROPS, GOVERNANCE_WORKFLOW_PROPS
 
 from src.governance.stacks.governance_common_stack import DataZoneConnectorsGovernanceCommonStack
 from src.governance.stacks.governance_workflows_stack import GovernanceWorkflowsStack
@@ -15,6 +15,30 @@ env = cdk.Environment(
     account= account,
     region= region
 )
+
+#copy and modify content from  config.governance.g_config to replace manual steps
+
+governed_id = stack.try_get_context("GOVERNED_ID")
+GOVERNANCE_PROPS = {
+    'account_id': account,
+    'region': region,
+    'a_account_numbers': governed_id,
+}
+
+GOVERNANCE_WORKFLOW_PROPS = {
+    'g_manage_environment_active': {        
+        'g_eventbridge_rule_enabled': True
+    },
+    'g_manage_environment_delete': {        
+        'g_eventbridge_rule_enabled': True
+    },
+    'g_manage_subscription_grant': {        
+        'g_eventbridge_rule_enabled': True
+    },
+    'g_manage_subscription_revoke': {        
+        'g_eventbridge_rule_enabled': True
+    }
+}
 
 # ---------------- Governance Stacks ------------------------
 governance_common_constructs = {}

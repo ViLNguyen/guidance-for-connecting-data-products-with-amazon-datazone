@@ -58,4 +58,5 @@ Actions:
     Configuration:
       StackName: governance
       Region: {{ region }}
+      Context: ${Secrets.GOVERNED_ID}
       CdkCliVersion: latest
