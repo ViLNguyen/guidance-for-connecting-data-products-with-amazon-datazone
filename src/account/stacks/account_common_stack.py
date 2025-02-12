@@ -5,7 +5,7 @@ from os import path;
 
 from aws_cdk import (
     Environment,
-    Stack,
+    NestedStack,
     Duration,
     CustomResource,
     custom_resources,
@@ -19,7 +19,7 @@ from aws_cdk import (
 
 from constructs import Construct
 
-class DataZoneConnectorsAccountCommonStack(Stack):
+class DataZoneConnectorsAccountCommonStack(NestedStack):
     """ Class to represents the stack containing all common resources in account."""
 
     def __init__(self, scope: Construct, construct_id: str, account_props: dict, env: Environment, **kwargs) -> None:

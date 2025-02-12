@@ -17,12 +17,19 @@ Actions:
     Inputs:
       Sources:
         - WorkflowSource
+      Variables:
+        - Name: region
+          Value: us-west-2
+        - Name: governanceID
+          Value: 581573970523
+        - Name: governedID
+          Value: ['791154145693']
     Configuration:
       Steps:
         - Run: chmod u+x ./.codecatalyst/*.sh
         - Run: ./.codecatalyst/init-runner.sh "${Secrets.USER_NAME}" "${Secrets.USER_EMAIL}" "${Secrets.USER_ID}" "${Secrets.PAT}" "${Secrets.SKIP_FOR_CUSTOMER}"
         #- Run: command -v cdk &> /dev/null && npm update -g aws-cdk || npm install -g aws-cdk; cdk --version
-        - Run: cd deployment/
+        - Run: ./.codecatalyst/init-runner.sh $governanceID $region $governedID
         - Run: yum update -y
         - Run: yum install -y pip npm
         - Run: npm install -g aws-cdk@latest
@@ -42,6 +49,9 @@ Actions:
         - WorkflowSource
     Environment:
       Name: prod_environment
+      Connections:
+        - Name: 581573970523
+          Role: CodeCatalystWorkflowDevelopmentRole-datazone_with_cc_vinglt
     Configuration:
       Region: us-west-2
   CDKDeploy:
@@ -50,11 +60,13 @@ Actions:
       - CDKBootstrap
     Environment:
       Name: prod_environment
+      Connections:
+        - Name: 581573970523
+          Role: CodeCatalystWorkflowDevelopmentRole-datazone_with_cc_vinglt
     Inputs:
       Sources:
         - WorkflowSource
     Configuration:
-      StackName: OpenSearchStack
-      Region: us-west-2
-      CdkRootPath: deployment
+      StackName: governance
+      Region: $region
       CdkCliVersion: latest

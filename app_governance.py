@@ -7,6 +7,7 @@ from src.governance.stacks.governance_common_stack import DataZoneConnectorsGove
 from src.governance.stacks.governance_workflows_stack import GovernanceWorkflowsStack
 
 app = cdk.App()
+stack = cdk.Stack(app, "governance")
 account = cdk.Aws.ACCOUNT_ID
 region = cdk.Aws.REGION
 
@@ -19,7 +20,7 @@ env = cdk.Environment(
 governance_common_constructs = {}
 
 dz_conn_g_common_stack = DataZoneConnectorsGovernanceCommonStack(
-    scope= app,
+    scope= stack,
     construct_id = "dz-conn-g-common-stack",
     governance_props = GOVERNANCE_PROPS,
     env = env,
@@ -32,7 +33,7 @@ governance_common_constructs = {
 }
 
 dz_conn_g_workflows_stack = GovernanceWorkflowsStack(
-    scope= app,
+    scope= stack,
     construct_id = "dz-conn-g-workflows-stack",
     governance_props = GOVERNANCE_PROPS,
     workflows_props = GOVERNANCE_WORKFLOW_PROPS,
