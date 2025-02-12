@@ -45,7 +45,7 @@ Actions:
     Environment:
       Name: prod_environment
     Configuration:
-      Region: $region
+      Region: {{ region }}
   CDKDeploy:
     Identifier: aws/cdk-deploy@v2
     DependsOn: 
@@ -57,5 +57,5 @@ Actions:
         - WorkflowSource
     Configuration:
       StackName: governance
-      Region: $region
+      Region: {{ region }}
       CdkCliVersion: latest
