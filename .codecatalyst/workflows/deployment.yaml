@@ -21,9 +21,9 @@ Actions:
         - Name: region
           Value: us-west-2
         - Name: governanceID
-          Value: '581573970523'
+          Value: 581573970523
         - Name: governedID
-          Value: ['791154145693']
+          Value: "['791154145693']"
     Configuration:
       Steps:
         - Run: chmod u+x ./.codecatalyst/*.sh
