@@ -1,4 +1,5 @@
 {
+  "app": "python3 app_governance.py",
   "context": {
     "@aws-cdk/aws-lambda:recognizeLayerVersion": true,
     "@aws-cdk/core:checkSecretUsage": true,
