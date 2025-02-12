@@ -58,5 +58,5 @@ Actions:
     Configuration:
       StackName: governance
       Region: {{ region }}
-      Context: '{"GOVERNED_ID": "["123"]"}'
+      Context: '{"GOVERNED_ID": ["123"]}'
       CdkCliVersion: latest
